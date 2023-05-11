@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:rolodex/models/base_model.dart';
+import 'package:quiz5/models/base_model.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseHelper {
@@ -37,6 +37,26 @@ class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> query(String table) async =>
       (await db).query(table);
+  Future<int> getCompleted() async {
+    Database db = await this.db;
+    var x = await db
+        .rawQuery('Select COUNT(*) as total FROM assignments WHERE status !=0');
+    // int count = firstIntValue(x);
+    print('First:${x[0]["total"]}');
+    var value = x[0]["total"].toString();
+    int count = int.parse(value);
+    return count;
+  }
+
+  Future<int> getRemaining() async {
+    Database db = await this.db;
+    var x = await db
+        .rawQuery('Select COUNT(*) as total FROM assignments WHERE status =0');
+    // int count = firstIntValue(x);
+    var value = x[0]["total"].toString();
+    int count = int.parse(value);
+    return count;
+  }
 
   Future<int> insert(String table, BaseModel model) async =>
       (await db).insert(table, model.toMap());

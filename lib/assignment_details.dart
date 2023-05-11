@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:rolodex/presenters/asignments_presenter.dart';
+import 'package:quiz5/presenters/asignments_presenter.dart';
 import 'models/assignment.dart';
 
 class ContactDialog {
@@ -17,13 +17,13 @@ class ContactDialog {
   );
 
   Widget build(
-      BuildContext context, viewState, bool isEdit, Assignment? contact) {
-    if (contact != null) {
-      this.assignment = contact;
+      BuildContext context, viewState, bool isEdit, Assignment? assignment) {
+    if (assignment != null) {
+      this.assignment = assignment;
       teTitle.text = this.assignment.title;
       teDeadline.text = this.assignment.deadline;
       teStatus.text =
-          this.assignment.status == 1 ? "Submitted" : "Not submitted";
+          this.assignment.status != 0 ? "Submitted" : "Not submitted";
     }
 
     return AlertDialog(
@@ -93,10 +93,7 @@ class ContactDialog {
 
   Future saveAssignment(bool isEdit) async {
     var assignment = Assignment(
-        // num.tryParse(teID.text) == null ? 0 : num.parse(teID.text),
-        teTitle.text,
-        teDeadline.text,
-        teStatus.text == "Submitted" ? 1 : 0);
+        teTitle.text, teDeadline.text, teStatus.text == "Submitted" ? 1 : 0);
 
     if (isEdit && this.assignment.id != null) {
       assignment.setId(this.assignment.id!);

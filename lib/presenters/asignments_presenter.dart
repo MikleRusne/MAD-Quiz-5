@@ -1,13 +1,25 @@
 import 'dart:async';
-import 'package:rolodex/data/database_helper.dart';
-import 'package:rolodex/models/assignment.dart';
-import 'package:rolodex/views/base_view.dart';
+import 'package:quiz5/data/database_helper.dart';
+import 'package:quiz5/models/assignment.dart';
+import 'package:quiz5/views/base_view.dart';
 
 class AssignmentsPresenter {
-  late final BaseView _view;
+  late BaseView _view;
 
   AssignmentsPresenter();
   AssignmentsPresenter.withView(this._view);
+
+  void SetView(BaseView _view) {
+    this._view = _view;
+  }
+
+  Future<int> getCountSubmitted() async {
+    return await DatabaseHelper.internal().getCompleted();
+  }
+
+  Future<int> getCountRemaining() async {
+    return await DatabaseHelper.internal().getRemaining();
+  }
 
   Future<List<Assignment>> getAll() async {
     print("Getting all");

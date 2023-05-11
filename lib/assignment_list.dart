@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rolodex/presenters/asignments_presenter.dart';
+import 'package:quiz5/presenters/asignments_presenter.dart';
 import 'assignment_details.dart';
 import 'models/assignment.dart';
 

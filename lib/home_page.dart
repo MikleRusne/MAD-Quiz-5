@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:rolodex/assignment_details.dart';
-import 'package:rolodex/assignments_provider.dart';
-import 'package:rolodex/models/assignment.dart';
-import 'package:rolodex/assignment_list.dart';
-import 'package:rolodex/presenters/asignments_presenter.dart';
-import 'package:rolodex/views/base_view.dart';
+import 'package:quiz5/assignment_details.dart';
+import 'package:quiz5/assignments_provider.dart';
+import 'package:quiz5/models/assignment.dart';
+import 'package:quiz5/assignment_list.dart';
+import 'package:quiz5/presenters/asignments_presenter.dart';
+import 'package:quiz5/title.dart';
+import 'package:quiz5/views/base_view.dart';
 import 'views/base_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,11 +26,16 @@ class _HomePageState extends State<HomePage> implements BaseView {
   @override
   void initState() {
     super.initState();
-    assignmentsPresenter = AssignmentsPresenter.withView(this);
   }
 
   displayRecord() {
     setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    assignmentsPresenter = AssignmentsProvider.of(context)!.presenter;
   }
 
   Widget _buildTitle(BuildContext context) {
@@ -79,21 +85,21 @@ class _HomePageState extends State<HomePage> implements BaseView {
 
   @override
   Widget build(BuildContext context) {
-    return AssignmentsProvider(
-        presenter: assignmentsPresenter,
-        child: Scaffold(
-          appBar: AppBar(
-            // title: _buildTitle(context),
-            title: _buildTitle(context),
-            actions: _buildActions(),
-          ),
-          body: FutureBuilder<List<Assignment>>(
-            future: assignmentsPresenter.getAll(),
-            builder: (context, snapshot) {
-              return AssignmentsList(snapshot.data ?? [], assignmentsPresenter);
-            },
-          ),
-        ));
+    AssignmentsProvider.of(context)?.SetBaseView(this);
+
+    return Scaffold(
+      appBar: AppBar(
+        // title: _buildTitle(context),
+        title: TitleWidget(),
+        actions: _buildActions(),
+      ),
+      body: FutureBuilder<List<Assignment>>(
+        future: assignmentsPresenter.getAll(),
+        builder: (context, snapshot) {
+          return AssignmentsList(snapshot.data ?? [], assignmentsPresenter);
+        },
+      ),
+    );
   }
 
   @override

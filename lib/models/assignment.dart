@@ -1,4 +1,4 @@
-import 'package:rolodex/models/base_model.dart';
+import 'package:quiz5/models/base_model.dart';
 
 class Assignment extends BaseModel {
   late String _title;
