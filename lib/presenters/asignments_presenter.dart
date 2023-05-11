@@ -31,8 +31,8 @@ class AssignmentsPresenter {
   }
 
   delete(Assignment contact) async {
-    print(contact.id);
-    await DatabaseHelper.internal().delete("contacts", contact);
+    // print(contact.id);
+    await DatabaseHelper.internal().delete("assignments", contact);
     updateScreen();
   }
 

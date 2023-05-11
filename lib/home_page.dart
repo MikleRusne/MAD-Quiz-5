@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rolodex/assignment_details.dart';
+import 'package:rolodex/assignments_provider.dart';
 import 'package:rolodex/models/assignment.dart';
 import 'package:rolodex/assignment_list.dart';
 import 'package:rolodex/presenters/asignments_presenter.dart';
@@ -19,12 +20,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> implements BaseView {
-  late AssignmentsPresenter contactsPresenter;
+  late AssignmentsPresenter assignmentsPresenter;
 
   @override
   void initState() {
     super.initState();
-    contactsPresenter = AssignmentsPresenter.withView(this);
+    assignmentsPresenter = AssignmentsPresenter.withView(this);
   }
 
   displayRecord() {
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> implements BaseView {
           crossAxisAlignment: horizontalTitleAlignment,
           children: const <Widget>[
             Text(
-              'Contacts',
+              'Assignments',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -78,19 +79,21 @@ class _HomePageState extends State<HomePage> implements BaseView {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // title: _buildTitle(context),
-        title: Text("Ayyy"),
-        actions: _buildActions(),
-      ),
-      body: FutureBuilder<List<Assignment>>(
-        future: contactsPresenter.getAll(),
-        builder: (context, snapshot) {
-          return AssignmentsList(snapshot.data ?? [], contactsPresenter);
-        },
-      ),
-    );
+    return AssignmentsProvider(
+        presenter: assignmentsPresenter,
+        child: Scaffold(
+          appBar: AppBar(
+            // title: _buildTitle(context),
+            title: _buildTitle(context),
+            actions: _buildActions(),
+          ),
+          body: FutureBuilder<List<Assignment>>(
+            future: assignmentsPresenter.getAll(),
+            builder: (context, snapshot) {
+              return AssignmentsList(snapshot.data ?? [], assignmentsPresenter);
+            },
+          ),
+        ));
   }
 
   @override

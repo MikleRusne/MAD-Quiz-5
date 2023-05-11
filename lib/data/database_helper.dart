@@ -41,9 +41,10 @@ class DatabaseHelper {
   Future<int> insert(String table, BaseModel model) async =>
       (await db).insert(table, model.toMap());
 
-  Future<int> update(String table, BaseModel model) async => (await db)
-      .update(table, model.toMap(), where: 'id = ?', whereArgs: [model.id]);
+  Future<int> update(String table, BaseModel model) async =>
+      (await db).update(table, model.toMap(),
+          where: 'incremental_id = ?', whereArgs: [model.id]);
 
-  Future<int> delete(String table, BaseModel model) async =>
-      (await db).delete(table, where: 'id = ?', whereArgs: [model.id]);
+  Future<int> delete(String table, BaseModel model) async => (await db)
+      .delete(table, where: 'incremental_id = ?', whereArgs: [model.id]);
 }
